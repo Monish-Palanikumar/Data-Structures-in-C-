@@ -56,23 +56,28 @@ class SinglyLinkedList
 		}
 		int insertByPosition(Node *newNode,int pos)
 		{
-			int i=1;
+			int count=1;
 			if(pos==1)
 				insertAtFirst(newNode);
 			else
 			{
+				if(isEmpty())
+				{
+					cout<<"Invalid index\n";
+					return 0;
+				}
 				Node *temp=first;
 				while(temp->next!=NULL)
 				{
 					temp=temp->next;
-					i++;
+					count++;
 				}
-				if(pos>i+1)
+				if(pos>count+1)
 				{
 					cout<<"Invalid index !\n";
 					return 0;
 				}
-				if(i+1==pos)
+				if(count+1==pos)
 					insertAtLast(newNode);
 				else
 				{
@@ -85,13 +90,13 @@ class SinglyLinkedList
 						temp=temp->next;
 						cur++;
 					}
-					while(temp->next!=NULL && cur==pos)
+					if(temp->next!=NULL && cur==pos)
 					{
 						prev->next=newNode;
 						newNode->next=temp;
 						return 1;
 					}
-					while(temp->next==NULL && cur==pos)
+					if(temp->next==NULL && cur==pos)
 					{
 						newNode->next=prev->next;
 						prev->next=newNode;
@@ -103,7 +108,10 @@ class SinglyLinkedList
 		int deleteAtFirst()
 		{
 			if(isEmpty())
+			{
+				cout<<"List empty!"<<endl;
 				return 0;
+			}
 			else
 			{
 				Node *temp=first;
@@ -115,7 +123,17 @@ class SinglyLinkedList
 		int deleteAtLast()
 		{
 			if(isEmpty())
+			{
+				cout<<"List empty !"<<endl;
 				return 0;
+			}
+			else if(first->next==NULL)
+			{
+				first=NULL;
+				delete first;
+				
+				return 1;
+			}
 			else
 			{
 				Node *temp=first;
@@ -130,7 +148,42 @@ class SinglyLinkedList
 				return 1;
 			}		
 		}
-		int deleteByPosition(int);
+		int deleteByPosition(int pos)
+		{
+			int count=1;
+			if(isEmpty())
+			{
+				cout<<"List empty"<<endl;
+				return 0;
+			}
+			else if(pos==1)
+				deleteAtFirst();
+			else
+			{
+				Node *temp=first;
+				Node*prev=temp;
+				int count=1;
+				while(temp->next!=NULL && count!=pos)
+				{
+					prev=temp;
+					temp=temp->next;
+					count++;
+				}
+				if(temp->next!=NULL && count==pos)
+				{
+					prev->next=temp->next;
+					delete temp;
+					return 1;
+				}
+				else if(temp->next==NULL && count==pos)
+					deleteAtLast();
+				else
+				{
+					cout<<"Invalid index!"<<endl;
+					return 0;
+				}
+			}
+		}
 		void displayList()
 		{
 			Node *ptr=first;
@@ -227,6 +280,18 @@ int main()
 						cout<<"Delete Success\n";
 					else
 						cout<<"Delete Failed\n";
+					break;
+				}
+				else if(ch1==3)
+				{
+					int pos;
+					cout<<"Enter position to be deleted\n";
+					cin>>pos;
+					flag=l.deleteByPosition(pos);
+					if(flag==1)
+						cout<<"Delete Success\n";
+					else
+						cout<<"Delete failed\n";
 					break;
 				}
 			}
