@@ -46,7 +46,7 @@ class Stack
 			{
 				cout<<"Stack is empty"<<endl;
 			}
-			
+			else
 			{
 				cout<<"\nThe stack contents are"<<endl;
 				for(int i=top;i>=0;i--)
