@@ -2,7 +2,7 @@
 #include<stdlib.h>
 #include<bits/stdc++.h>
 using namespace std;
-class Queue
+class CircularQueue
 {
 	private:
 		int front;
@@ -10,7 +10,7 @@ class Queue
 		int capacity;
 		int *data;
 	public:
-		Queue(int c)
+		CircularQueue(int c)
 		{
 			front=-1;
 			rear=-1;
@@ -20,14 +20,14 @@ class Queue
 		}
 		int isEmpty()
 		{
-			if((front==-1 && rear==-1)|| front>rear)
+			if((front==-1 && rear==-1))
 				return 1;
 			else
 				return 0;
 		}
 		int isFull()
 		{
-			if(rear==capacity-1)
+			if(front==(rear+1)%capacity)
 				return 1;
 			else
 				return 0;
@@ -71,11 +71,11 @@ class Queue
 				++front;
 				++rear;
 				data[rear]=newData;
-				return1
+				return 1;
 			}
 			else
 			{	
-				++rear;
+				rear=(rear+1)%capacity;
 				data[rear]=newData;
 				return 1;
 			}
@@ -97,7 +97,7 @@ class Queue
 			else
 			{
 				dequeuedElement=data[front];
-				front++;
+				front=(front+1)%capacity;
 			}
 			return dequeuedElement;
 		}
@@ -107,7 +107,7 @@ int main()
 	int ch,cap,flag=0;
 	cout<<"Enter queue capacity\n";
 	cin>>cap;
-	Queue q(cap);
+	CircularQueue q(cap);
 	while(1)
 	{
 		cout<<"1. Enqueue\n2. Dequeue\n3. Peek\n4. Display queue contents\n5. Exit\nEnter your choice\n";
